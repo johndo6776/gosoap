@@ -2,8 +2,10 @@ package soap
 
 import (
 	"fmt"
+	"log"
 	"mime"
 	"net/http"
+	"net/http/httputil"
 	"strings"
 
 	"github.com/m29h/xml"
@@ -41,9 +43,21 @@ func (r *Response) deserialize() error {
 	}
 
 	fmt.Printf("RESPONSE | mediaType : %s\n", mediaType)
-	fmt.Printf("RESPONSE | response.body : %s\n", r.Response.Body)
+	// fmt.Printf("RESPONSE | response.body : %s\n", r.Response.Body)
+	//  print the raw response (see https://gophersnippets.com/how-to-print-a-raw-http-response)
+	defer r.Response.Body.Close()
+		// DumpResponse returns wire representation
+	// of the http response
+	dump, err := httputil.DumpResponse(r.Response, true)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%s", dump)
 
+
+	
 	envelope := NewEnvelope(r.body)
+
 
 	if strings.HasPrefix(mediaType, "multipart/") {
 		// Here we handle any SOAP requests embedded in a MIME multipart response.

@@ -1,11 +1,6 @@
-module github.com/m29h/gosoap
+module github.com/johndo6776/gosoap
 
 go 1.21.1
-
-retract (
-	v1.0.0 // Published accidentally.
-	v1.0.1 // Only contains retractions.
-)
 
 require (
 	github.com/beevik/etree v1.2.0

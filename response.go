@@ -44,7 +44,7 @@ func (r *Response) deserialize() error {
 	if strings.HasPrefix(mediaType, "multipart/") {
 		// Here we handle any SOAP requests embedded in a MIME multipart response.
 		err = newXopDecoder(r.Response.Body, mediaParams).decode(envelope)
-	} else if strings.Contains(mediaType, "text/xml") {
+	} else if (strings.Contains(mediaType, "text/xml") || strings.Contains(mediaType, "application/soap+xml") ){
 		// This is normal SOAP XML response handling.
 		err = xml.NewDecoder(r.Response.Body).Decode(&envelope)
 	} else {
